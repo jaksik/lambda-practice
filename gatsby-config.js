@@ -1,3 +1,5 @@
+var proxy = require("http-proxy-middleware")
+
 module.exports = {
   siteMetadata: {
     title: `Gatsby Default Starter`,
@@ -5,7 +7,17 @@ module.exports = {
     author: `@gatsbyjs`,
   },
   plugins: [
+    `gatsby-plugin-netlify`,
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-stripe`,
+    { 
+      resolve: `gatsby-source-stripe`,
+      options: {
+        objects: ['Sku'],
+        secretKey: `sk_test_DiIrhluODliOuo2J5EAxaGxj00DdFVPCoZ`,
+        downloadFiles: true,
+      },
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -31,4 +43,15 @@ module.exports = {
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
   ],
+  developMiddleware: app => {
+    app.use(
+      "/.netlify/functions/",
+      proxy({
+        target: "http://localhost:9000",
+        pathRewrite: {
+          "/.netlify/functions/": "",
+        },
+      })
+    )
+  },
 }
