@@ -9,15 +9,6 @@ module.exports = {
   plugins: [
     `gatsby-plugin-netlify`,
     `gatsby-plugin-react-helmet`,
-    `gatsby-plugin-stripe`,
-    { 
-      resolve: `gatsby-source-stripe`,
-      options: {
-        objects: ['Sku'],
-        secretKey: `sk_test_DiIrhluODliOuo2J5EAxaGxj00DdFVPCoZ`,
-        downloadFiles: true,
-      },
-    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
