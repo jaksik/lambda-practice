@@ -4,50 +4,42 @@ import { Link } from "gatsby"
 import Layout from "../components/layout"
 import Image from "../components/image"
 import SEO from "../components/seo"
-import StripeCheckout from "react-stripe-checkout";
 
 const IndexPage = () => {
 
-  const token = async () => {
-    let call
-    call = await fetch("/.netlify/functions/createOrder", {
-      method: 'POST',
-      body: JSON.stringify({
-        order: {
-          currency: 'usd'
-        },
-        token: {
-          card: {
-            number: '4242424242424242',
-            exp_month: 12,
-            exp_year: 2020,
-            cvc: '123'
-          }
-        },
-        shipping: {
-          name: 'Jenny Rosen',
-          address: {
-            line1: '1234 Main Street',
-            city: 'San Francisco',
-            state: 'CA',
-            postal_code: '94111',
-            country: 'US',
-          },
-        },
-        items: [
-          {
-            type: 'sku',
-            parent: 'sku_FgJVldqsyrIzqQ',
-            quantity: 2,
-          },
-        ],
-      })
-    })
-    .then(call => call.json())
-    .then(console.log)
+    function postData() {
+        fetch("https://api.print.io/api/v/5/source/api/shippingprices/?recipeid=f255af6f-9614-4fe2-aa8b-1b77b936d9d6", {
+  "method": "POST",
+  "headers": {
+    "content-type": "application/json"
+  },
+  "body": {
+    "Items": [
+      {
+        "SKU": "PhoneCase-GalaxyNote2-Matte",
+        "Quantity": 1
+      },
+      {
+        "SKU": "PhoneCase-Glossy-GalaxyNote3",
+        "Quantity": 2
+      }
+    ],
+    "ShipToPostalCode": "115301",
+    "ShipToState": "PA",
+    "LanguageCode": "en",
+    "CurrencyCode": "USD",
+    "ShipToCountry": "US"
   }
+})
+          .then(response => response.json())
+          .then(console.log)
+          .catch(err => {
+            console.log(err);
+          });
+    }
 
-token();
+    postData();
+
   
   return (
     <Layout>

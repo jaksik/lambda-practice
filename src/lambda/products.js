@@ -7,7 +7,7 @@ exports.handler = async (event, context) => {
         }
     };
   return fetch('https://api.printful.com/products', obj)
-    // .then(response => response.json())
+    //.then(response => response.json())
     .then(data => ({
       statusCode: 200,
       body: data
